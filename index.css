@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+#main {
+  background-image: url(./wal.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+  height: 100vh;
+}
+h1 {
+  color: #7b0edb;
+  width: auto;
+  text-align: center;
+  /* border: 1px solid bisque; */
+}
+
+#webcam-container {
+  /* border: 2px solid black; */
+  width: 50%;
+  margin: auto;
+}
+
+#bdy {
+  background-color: #00ddeb;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10%;
+  align-items: center;
+}
+
+#button {
+  background: #5e5df0;
+  border-radius: 999px;
+  box-shadow: #5e5df0 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji",
+    NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji",
+    EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue",
+    "Noto Sans", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 8px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+  margin: 2px;
+}
+
+#label-container {
+  position: fixed;
+  top: 0;
+  margin: 2px;
+  margin-left: 10px;
+}

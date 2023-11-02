@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+  </head>
+  <body>
+    <div class="sh-toast-container" id="shToastContainerTop"></div>
+
+    <div id="main">
+      <div id="bdy">
+        <h1>Start the Class</h1>
+        <button id="button" type="button" onclick="init()">Start</button>
+      </div>
+      <div id="webcam-container"></div>
+      <div id="label-container"></div>
+    </div>
+
+    <script type="text/javascript">
+      const URL = "https://teachablemachine.withgoogle.com/models/60naDDGnu/";
+
+      let model, webcam, labelContainer, maxPredictions;
+      let doubtCounter = 0; // Counter for tracking doubt predictions
+
+      async function init() {
+        alert("Class is Going to Start...!");
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        const flip = true;
+        webcam = new tmImage.Webcam(400, 300, flip);
+        await webcam.setup();
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) {
+          labelContainer.appendChild(document.createElement("div"));
+        }
+      }
+
+      async function loop() {
+        webcam.update();
+        await predict();
+        window.requestAnimationFrame(loop);
+      }
+
+      async function predict() {
+        const prediction = await model.predict(webcam.canvas);
+        const doubtClassIndex = 1; // Adjust this index based on your model
+
+        if (prediction[doubtClassIndex].probability > 0.9) {
+          doubtCounter++;
+          if (doubtCounter >= 90) {
+            // 3 seconds at 30 frames per second
+            alert("Student have some Doubt...!");
+            doubtCounter = 0; // Reset the counter
+          }
+        } else {
+          doubtCounter = 0; // Reset the counter if prediction drops below 0.90
+        }
+
+        for (let i = 0; i < maxPredictions; i++) {
+          const classPrediction =
+            prediction[i].className +
+            ": " +
+            prediction[i].probability.toFixed(2);
+          labelContainer.childNodes[i].innerHTML = classPrediction;
+        }
+      }
+    </script>
+  </body>
+</html>
